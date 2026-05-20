@@ -57,7 +57,11 @@
       </div>
       <div class="preview-shell">
         <div class="stream-status"><span class="live-dot"></span><span id="stream-state">Waiting for QR scan</span></div>
-        <img src="{{ url_for('stream', session_id=session_id) }}" alt="Live stream from paired phone">
+        <img
+          id="live-frame"
+          src="{{ url_for('latest_frame', session_id=session_id, t=cache_bust) }}"
+          alt="Live stream from paired phone"
+        >
       </div>
     </section>
 

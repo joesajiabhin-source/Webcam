@@ -1,0 +1,10 @@
+__pycache__/
+*.py[cod]
+
+cert.pem
+key.pem
+cloudflared.log
+
+.env
+.venv/
+venv/

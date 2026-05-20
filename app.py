@@ -237,6 +237,18 @@ def status(session_id):
     )
 
 
+@app.route("/latest/<session_id>.jpg")
+def latest_frame(session_id):
+    session = get_session(session_id)
+    frame = session["frame"] or PLACEHOLDER_JPEG
+    response = make_response(frame)
+    response.headers["Content-Type"] = "image/jpeg"
+    response.headers["Cache-Control"] = "no-store, no-cache, must-revalidate, max-age=0"
+    response.headers["Pragma"] = "no-cache"
+    response.headers["Expires"] = "0"
+    return response
+
+
 @app.route("/stream/<session_id>")
 def stream(session_id):
     return Response(
