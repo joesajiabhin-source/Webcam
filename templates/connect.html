@@ -1,0 +1,18 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Connect Camera - CamLink</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/site.css') }}">
+</head>
+<body class="connect-page">
+  <main class="connect-card">
+    <span class="brand-mark"></span>
+    <p class="eyebrow">Connected to session {{ session_id }}</p>
+    <h1>Start phone camera</h1>
+    <p class="lede">This phone can reach the website. Tap start, allow camera permission, and keep this page open.</p>
+    <a class="button primary" href="{{ phone_url }}">Start camera</a>
+  </main>
+</body>
+</html>
