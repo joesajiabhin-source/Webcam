@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CamLink Mobile Camera</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/site.css', t=cache_bust) }}">
+</head>
+<body class="phone-page">
+  <video id="video" autoplay playsinline muted></video>
+  <canvas id="canvas"></canvas>
+  <div class="mobile-bar">
+    <div>
+      <strong>CamLink</strong>
+      <div id="status" class="mobile-status">Starting camera...</div>
+    </div>
+    <button id="switch" class="switch-button" type="button">Switch</button>
+  </div>
+
+  <script>
+    window.CAMLINK_SESSION_ID = {{ session_id|tojson }};
+  </script>
+  <script src="{{ url_for('static', filename='js/phone.js', t=cache_bust) }}"></script>
+</body>
+</html>

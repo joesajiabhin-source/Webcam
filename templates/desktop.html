@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CamLink - Phone Webcam</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/site.css', t=cache_bust) }}">
+</head>
+<body class="desktop-page">
+  <header class="site-header">
+    <a class="brand" href="{{ url_for('index') }}" aria-label="CamLink home">
+      <span class="brand-mark"></span>
+      <span>CamLink</span>
+    </a>
+    <nav class="site-nav" aria-label="Main navigation">
+      <a href="#pair">Pair</a>
+      <a href="#preview">Preview</a>
+      <a href="#deploy">Deploy</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero" id="pair">
+      <div class="hero-copy">
+        <p class="eyebrow">Phone to computer webcam</p>
+        <h1>Scan once. Use your mobile camera on this website.</h1>
+        <p class="lede">Open this page on your computer, scan the QR code on your phone, allow camera access, and both devices link through this website session.</p>
+        <div class="actions">
+          <a class="button primary" href="{{ url_for('new_session', t=cache_bust) }}">New QR</a>
+          <a class="button secondary" href="#preview">View stream</a>
+        </div>
+      </div>
+
+      <aside class="pairing-panel" aria-label="Mobile pairing">
+        <div class="panel-head">
+          <span class="live-dot"></span>
+          <span id="pair-state">Waiting for QR scan</span>
+        </div>
+        <div class="qr-frame">
+          <img src="{{ url_for('qr_svg', session_id=session_id, t=cache_bust) }}" alt="QR code for mobile camera link">
+        </div>
+        <p class="hint">Scan with the mobile device you want to link to this desktop session.</p>
+        <div class="phone-url">{{ connect_url }}</div>
+        <div class="pairing-actions">
+          <a class="button primary compact" href="{{ connect_url }}">Open phone link</a>
+          <a class="button secondary compact" href="{{ url_for('new_session', t=cache_bust) }}">Refresh QR</a>
+        </div>
+        <p class="notice" data-visible="{{ 'false' if secure else 'true' }}">Camera access on mobile normally requires HTTPS. Deploy this app on an HTTPS host for real website use.</p>
+        <p class="hint small">For WhatsApp-style linking from anywhere, deploy this site on HTTPS and set PUBLIC_BASE_URL to your domain.</p>
+      </aside>
+    </section>
+
+    <section class="stream-section" id="preview" aria-label="Computer webcam preview">
+      <div class="section-heading">
+        <p class="eyebrow">Live monitor</p>
+        <h2>Computer preview</h2>
+      </div>
+
+      <!-- Display Size & Ratio Controls -->
+      <div class="display-controls" id="display-controls">
+        <div class="control-group">
+          <span class="control-label">Ratio</span>
+          <div class="ratio-presets" id="ratio-presets">
+            <button class="preset-btn active" data-ratio="16/9" title="Landscape 16:9">16:9</button>
+            <button class="preset-btn" data-ratio="4/3" title="Standard 4:3">4:3</button>
+            <button class="preset-btn" data-ratio="3/2" title="Classic 3:2">3:2</button>
+            <button class="preset-btn" data-ratio="1/1" title="Square 1:1">1:1</button>
+            <button class="preset-btn" data-ratio="9/16" title="Portrait 9:16">9:16</button>
+          </div>
+        </div>
+        <div class="control-divider"></div>
+        <div class="control-group">
+          <span class="control-label">Size</span>
+          <div class="size-presets" id="size-presets">
+            <button class="preset-btn size-btn" data-size="360" title="Small — 360px">S</button>
+            <button class="preset-btn size-btn" data-size="640" title="Medium — 640px">M</button>
+            <button class="preset-btn size-btn active" data-size="960" title="Large — 960px">L</button>
+            <button class="preset-btn size-btn" data-size="full" title="Full width">Full</button>
+          </div>
+        </div>
+        <div class="control-divider"></div>
+        <div class="control-group slider-group">
+          <span class="control-label">Custom</span>
+          <input type="range" id="size-slider" class="size-slider" min="240" max="1920" value="960" step="10">
+          <span class="slider-value" id="slider-value">960px</span>
+        </div>
+      </div>
+
+      <div class="preview-shell" id="preview-shell">
+        <div class="stream-status"><span class="live-dot"></span><span id="stream-state">Waiting for QR scan</span></div>
+        <img
+          id="live-frame"
+          src="{{ url_for('latest_frame', session_id=session_id, t=cache_bust) }}"
+          alt="Live stream from paired phone"
+        >
+      </div>
+    </section>
+
+    <section class="deploy-section" id="deploy">
+      <div>
+        <p class="eyebrow">Website ready</p>
+        <h2>Deploy notes</h2>
+      </div>
+      <div class="deploy-grid">
+        <article>
+          <h3>HTTPS required</h3>
+          <p>Use a hosted HTTPS domain so phone browsers allow camera permission.</p>
+        </article>
+        <article>
+          <h3>One Python process</h3>
+          <p>The live frames are kept in memory, so deploy with a single worker process.</p>
+        </article>
+        <article>
+          <h3>Same link</h3>
+          <p>The QR code sends the phone to the matching session on this website.</p>
+        </article>
+      </div>
+    </section>
+  </main>
+  <script>
+    window.CAMLINK_SESSION_ID = {{ session_id|tojson }};
+  </script>
+  <script src="{{ url_for('static', filename='js/desktop.js', t=cache_bust) }}"></script>
+</body>
+</html>

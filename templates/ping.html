@@ -1,0 +1,18 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CamLink Test</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/site.css') }}">
+</head>
+<body class="connect-page">
+  <main class="connect-card">
+    <span class="brand-mark"></span>
+    <p class="eyebrow">Connection OK</p>
+    <h1>Phone can reach CamLink</h1>
+    <p class="lede">This test page loaded from the Python server. Go back to the desktop page and scan the main QR code.</p>
+    <a class="button primary" href="{{ url_for('index', t=now) }}">Open CamLink</a>
+  </main>
+</body>
+</html>
